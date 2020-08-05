@@ -13,15 +13,20 @@ function createSelfSignedCert() {
 }
 
 sed 's#${APP_DIR}#'${APP_DIR}'#g;s#${DB_PASSWORD}#'${DB_PASSWORD}'#g' m2ee_template.yaml > m2ee_$APP_NAME.yaml
-mkdir $MENDIX_DIR
+mkdir -p $MENDIX_DIR/certs
 cp m2ee_$APP_NAME.yaml $HOME/.mendix/m2ee_$APP_NAME.yaml
 
 createSelfSignedCert
+
+cp ../certs/self_signed.crt $MENDIX_DIR/certs/self_signed.crt
+cp ../certs/self_signed.key $MENDIX_DIR/certs/self_signed.key
 
 sed 's#${APP_DIR}#'${APP_DIR}'#g;s#${APP_NAME}#'${APP_NAME}'#g;s#${MENDIX_DIR}#'${MENDIX_DIR}'#g' nginx_template > nginx_$APP_NAME
 sudo cp nginx_$APP_NAME /etc/nginx/sites-available/nginx_$APP_NAME
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/nginx_$APP_NAME /etc/nginx/sites-enabled/default
+
+sudo service nginx restart
 
 mkdir $APP_DIR
 mkdir -p $APP_DIR/runtimes/ $APP_DIR/web/ $APP_DIR/model/ $APP_DIR/data/database $APP_DIR/data/files \
