@@ -1,0 +1,54 @@
+#
+# ~/.m2ee/m2ee.yaml
+# user/application specific configuration
+#
+# All non-essential configuration settings have been omitted in this example
+# file. Refer to the full-documented-m2ee.yaml in the examples directory for a
+# full list of available options and explanation about them.
+#
+m2ee:
+  app_name: File Upload Test
+  app_base: /home/parallels/mendix
+  # m2ee http admin interface and password
+  admin_port: 9000
+  admin_pass: p@ssw0rd!
+  # mxruntime web interface port
+  runtime_port: 8000
+  # set to * if you want to have the public runtime port accessible from other
+  # hosts than localhost (Mendix >= 4.3.0)
+  #runtime_listen_addresses: "*"
+  # custom java options, like -Xmx256m or -Djava.foo=bar
+  javaopts: [
+    "-Dfile.encoding=UTF-8", "-Xmx512M", "-Xms512M",
+    "-Djava.io.tmpdir=/home/parallels/mendix/data/tmp",
+  ]
+  # file which will be read back by the m2ee log command to provide live logging
+  # info this is *not* a file m2ee-tools is going to write to, it is a hint
+  # about where to find the log which is written by the mendix application
+  logfile: /home/parallels/mendix/app.log
+logging:
+  - # example of file logging by the platform itself
+    name: FileSubscriber
+    type: file
+    autosubscribe: INFO
+    filename: /home/parallels/mendix/m2ee.log
+    max_size: 10485760 # bytes(!!)
+    max_rotation: 7
+mxruntime:
+  # Database login credentials
+  DatabaseType: PostgreSQL
+  # The DatabaseHost contains the database hostname and optionally, also the TCP
+  # port number.  It's possible to use a plain IPv6 address by enclosing it in
+  # brackets, like: "[::1]:5432"
+  DatabaseHost: "127.0.0.1"
+  DatabaseName: mendix
+  DatabaseUserName: mendix
+  DatabasePassword: mendix
+
+  MicroflowConstants:
+  # put microflow constants in here
+  #Module.Constant: text
+  #AnotherModule.AnotherConstant: bla
+
+  # ScheduledEventExecution can be set to ALL, NONE (default) or SPECIFIED
+  ScheduledEventExecution: NONE
