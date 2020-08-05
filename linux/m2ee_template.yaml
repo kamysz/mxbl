@@ -8,7 +8,7 @@
 #
 m2ee:
   app_name: File Upload Test
-  app_base: /home/parallels/mendix
+  app_base: ${APP_DIR}
   # m2ee http admin interface and password
   admin_port: 9000
   admin_pass: p@ssw0rd!
@@ -20,18 +20,18 @@ m2ee:
   # custom java options, like -Xmx256m or -Djava.foo=bar
   javaopts: [
     "-Dfile.encoding=UTF-8", "-Xmx512M", "-Xms512M",
-    "-Djava.io.tmpdir=/home/parallels/mendix/data/tmp",
+    "-Djava.io.tmpdir=${APP_DIR}/data/tmp",
   ]
   # file which will be read back by the m2ee log command to provide live logging
   # info this is *not* a file m2ee-tools is going to write to, it is a hint
   # about where to find the log which is written by the mendix application
-  logfile: /home/parallels/mendix/app.log
+  logfile: ${APP_DIR}/app.log
 logging:
   - # example of file logging by the platform itself
     name: FileSubscriber
     type: file
     autosubscribe: INFO
-    filename: /home/parallels/mendix/m2ee.log
+    filename: ${APP_DIR}/m2ee.log
     max_size: 10485760 # bytes(!!)
     max_rotation: 7
 mxruntime:
@@ -43,7 +43,7 @@ mxruntime:
   DatabaseHost: "127.0.0.1"
   DatabaseName: mendix
   DatabaseUserName: mendix
-  DatabasePassword: mendix
+  DatabasePassword: ${DB_PASSWORD}
 
   MicroflowConstants:
   # put microflow constants in here

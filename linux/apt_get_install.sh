@@ -42,7 +42,4 @@ if ! which psql >/dev/null; then
   wait_for_apt_get
   sudo apt-get install -y postgresql postgresql-contrib >/dev/null
   sudo update-rc.d postgresql enable
-  sudo -u postgres psql -c "create database mendix;"
-  sudo -u postgres psql -c "create user mendix with encrypted password 'mendix';"
-  sudo -u postgres psql -c "grant all privileges on database mendix to mendix;"
 fi
