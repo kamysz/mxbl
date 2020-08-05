@@ -1,0 +1,58 @@
+upstream ${APP_NAME} {
+    server 127.0.0.1:8000;
+    keepalive 8;
+}
+
+server {
+    listen [::]:443 ssl;
+    listen 0.0.0.0:443 ssl;
+
+    ssl_certificate ${MENDIX_DIR}/certs/self_signed.crt;
+    ssl_certificate_key ${MENDIX_DIR}/certs/self_signed.key;
+
+    root ${APP_DIR}/web/;
+
+    location / {
+        # Instruct the browser to never cache the first login page, since
+        # it would prevent us from seeing updates after a change
+        if ($request_uri ~ ^/((index[\w-]*|login)\.html)?$) {
+            add_header Cache-Control "no-cache";
+            add_header X-Frame-Options "SAMEORIGIN";
+        }
+        # Agressively cache these files, since they use a cache bust
+        if ($request_uri ~ ^/(.*\.(css|js)|(css|img|js|lib|mxclientsystem|pages|widgets)/.*)\?[0-9]+$) {
+            expires 1y;
+        }
+        # By default first look if the requests points to static content.
+        # If not, proxy it to the runtime process.
+        try_files $uri $uri/ @runtime;
+    }
+    location @runtime {
+        proxy_pass http://${APP_NAME};
+        allow all;
+    }
+    location = /file {
+        proxy_pass http://${APP_NAME};
+        # Be generous about the size of things that can be uploaded
+        client_max_body_size 1G;
+        # Never buffer uploads or downloads, directly stream them
+        proxy_buffering off;
+        proxy_request_buffering off;
+    }
+    location = /xas/ {
+        proxy_pass http://${APP_NAME};
+    }
+    # Never expose the -doc paths on a public application instance
+    location ~ ^/\w+-doc/ {
+        deny all;
+    }
+    # Apply an IP Filter restriction on some path, regardless of the fact we're serving
+    # static or dynamic content
+    # location /hello/ {
+    #     try_files $uri $uri/ @runtime;
+    #     allow 198.51.100.0/24;
+    #     allow 2001:db8:4:3770::/120;
+    #     deny all;
+    # }
+
+}

@@ -43,3 +43,8 @@ if ! which psql >/dev/null; then
   sudo apt-get install -y postgresql postgresql-contrib >/dev/null
   sudo update-rc.d postgresql enable
 fi
+
+if ! which nginx >/dev/null; then
+  wait_for_apt_get
+  sudo apt-get install -y nginx >/dev/null
+fi

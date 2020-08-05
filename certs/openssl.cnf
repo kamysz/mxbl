@@ -1,0 +1,18 @@
+[ req ]
+prompt = no
+default_bits		= 2048
+default_md		    = sha256
+distinguished_name	= req_distinguished_name
+attributes		    = req_attributes
+req_extensions      = v3_req
+
+[ req_distinguished_name ]
+C               = US
+ST              = MA
+L               = Boston
+O               = Mendix
+OU              = Mendix
+CN              = Mendix
+emailAddress    = noreply@mendix.com
+
+[ req_attributes ]
