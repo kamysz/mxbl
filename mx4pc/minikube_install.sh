@@ -2,24 +2,6 @@
 
 EXIT_PROMPT="This script will now exit"
 
-function wait_for_apt_get() {
-  i=0
-  tput sc
-  while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
-    case $(($i % 4)) in
-    0) j="-" ;;
-    1) j="\\" ;;
-    2) j="|" ;;
-    3) j="/" ;;
-    esac
-    tput rc
-    echo -en "\r[$j] Waiting for other apt-get processes to finish..."
-    sleep 0.5
-    ((i = i + 1))
-  done
-  tput rc
-}
-
 function getMachineType() {
   unameOut="$(uname -s)"
   case "${unameOut}" in
@@ -36,21 +18,7 @@ function getMachineType() {
 
 function installPackageManager() {
   case "${machine}" in
-  Linux)
-    if which apt-get >/dev/null; then
-      echo "apt-get is already installed"
-    else
-      echo "apt-get is not installed. Installing now..."
-      wget http://security.ubuntu.com/ubuntu/pool/main/a/apt/apt_1.0.1ubuntu2.17_amd64.deb -O apt.deb
-      sudo dpkg -i apt.deb
-      if ! which apt-get >/dev/null; then
-        echo "Unable to install apt-get"
-        echo "Please manually install apt-get and try again"
-        echo $EXIT_PROMPT
-        exit
-      fi
-    fi
-    ;;
+  Linux);;
   Mac)
     echo "Checking if Homebrew is already installed"
     if which brew >/dev/null; then
