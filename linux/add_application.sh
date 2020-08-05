@@ -4,7 +4,7 @@ APP_NAME=mendix
 APP_DIR=~/$APP_NAME
 DB_PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '')
 
-sed 's#${APP_DIR}#'${APP_DIR}'#g;s#${DB_PASSWORD}#'${DB_PASSWORD}'#g' m2ee.yaml > m2ee-$APP_NAME.yaml
+sed 's#${APP_DIR}#'${APP_DIR}'#g;s#${DB_PASSWORD}#'${DB_PASSWORD}'#g' m2ee_template.yaml > m2ee-$APP_NAME.yaml
 mkdir ~/.mendix
 cp m2ee-$APP_NAME.yaml ~/.mendix/m2ee-$APP_NAME.yaml
 
