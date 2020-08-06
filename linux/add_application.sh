@@ -21,6 +21,7 @@ createSelfSignedCert
 cp ../certs/self_signed.crt $MENDIX_DIR/certs/self_signed.crt
 cp ../certs/self_signed.key $MENDIX_DIR/certs/self_signed.key
 
+sudo cp nginx.conf /etc/nginx/nginx.conf
 sed 's#${APP_DIR}#'${APP_DIR}'#g;s#${APP_NAME}#'${APP_NAME}'#g;s#${MENDIX_DIR}#'${MENDIX_DIR}'#g' nginx_template > nginx_$APP_NAME
 sudo cp nginx_$APP_NAME /etc/nginx/sites-available/nginx_$APP_NAME
 sudo rm /etc/nginx/sites-enabled/default
